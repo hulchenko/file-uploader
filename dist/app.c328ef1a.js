@@ -118,13 +118,82 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"upload.js":[function(require,module,exports) {
-console.log('upload.js');
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.upload = upload;
+
+function upload(selector) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var input = document.querySelector(selector);
+  var preview = document.createElement('div');
+  preview.classList.add('preview');
+  var open = document.createElement('button');
+  open.classList.add('btn');
+  open.textContent = 'Open';
+
+  if (options.multi) {
+    //multi for multiple files upload at once
+    input.setAttribute('multiple', true);
+  }
+
+  if (options.accept && Array.isArray(options.accept)) {
+    //set selective files for upload rule('.png', '.jpeg', '.jpg', '.gif')
+    input.setAttribute('accept', options.accept.join(','));
+  }
+
+  input.insertAdjacentElement('afterend', preview); //insert preview div on img selection
+
+  input.insertAdjacentElement('afterend', open); //insert button after the default one
+
+  var triggerInput = function triggerInput() {
+    return input.click();
+  };
+
+  var changeHandler = function changeHandler(event) {
+    if (event.target.files.length === 0) {
+      return;
+    }
+
+    var files = Array.from(event.target.files);
+    preview.innerHTML = ''; //resets list of items on upload
+
+    files.forEach(function (file) {
+      if (!file.type.match('image')) {
+        //if uploading file is not an image, do not do anything, otherwise return file's name
+        return;
+      }
+
+      var reader = new FileReader(); //JS built in FileReader element(async)
+
+      reader.onload = function (event) {
+        var src = event.target.result; //image code
+
+        preview.insertAdjacentHTML('afterbegin', "\n        <div class='preview-image'>\n        <div class='preview-remove'>&times</div>\n        <img src='".concat(src, "' alt='").concat(file.name, "'/>\n        </div>")); // input.insertAdjacentHTML(
+        //   'afterend',
+        //   `<img src="${event.target.result}" />`
+        // ); //initial preview to work with
+      };
+
+      reader.readAsDataURL(file);
+    });
+  };
+
+  open.addEventListener('click', triggerInput);
+  input.addEventListener('change', changeHandler);
+}
 },{}],"app.js":[function(require,module,exports) {
 "use strict";
 
-require("./upload.js");
+var _upload = require("./upload.js");
 
-console.log('app.js');
+(0, _upload.upload)('#file', {
+  multi: true,
+  //multi for multiple files upload at once
+  accept: ['.png', '.jpeg', '.jpg', '.gif']
+});
 },{"./upload.js":"upload.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -153,7 +222,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52318" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52771" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
