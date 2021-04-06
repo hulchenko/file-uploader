@@ -6,6 +6,6 @@ Environment: Node.js, FireBase
 
 https://hulchenko.github.io/file-uploader/
 
-Cfg: https://github.com/hulchenko/file-uploader/blob/main/config.md
+Setup: https://github.com/hulchenko/file-uploader/blob/main/config.md
 
-![preview](https://imgur.com/SrbZ1qC)
+![preview](https://i.imgur.com/SrbZ1qC.png)
