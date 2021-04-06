@@ -20,4 +20,6 @@
     5. on-click return a list of created array upon selection
     6. target whole block on .preview-remove click
     7. add remove function / animation
-16. add upload button after pics loaded to the screen
+16. add upload button, rewrite code after const element, for cleaner look
+17. remove upload button visibility, enable it only upon img loading to the screen
+18. add upload button functionality (uploadHandler)

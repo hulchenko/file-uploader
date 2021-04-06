@@ -125,6 +125,18 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.upload = upload;
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 /* bytes to kilobytes functionality */
 function bytesToSize(bytes) {
   var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
@@ -133,15 +145,41 @@ function bytesToSize(bytes) {
   return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
 }
 
+var element = function element(tag) {
+  var classes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+  var content = arguments.length > 2 ? arguments[2] : undefined;
+  var node = document.createElement(tag);
+
+  if (classes.length) {
+    var _node$classList;
+
+    (_node$classList = node.classList).add.apply(_node$classList, _toConsumableArray(classes));
+  }
+
+  if (content) {
+    node.textContent = content;
+  }
+
+  return node;
+};
+
 function upload(selector) {
   var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   var files = [];
-  var input = document.querySelector(selector);
-  var preview = document.createElement('div');
-  preview.classList.add('preview');
-  var open = document.createElement('button');
-  open.classList.add('btn');
-  open.textContent = 'Open';
+  var input = document.querySelector(selector); //New Code:
+
+  var preview = element('div', ['preview']);
+  var open = element('button', ['btn'], 'Open');
+  var upload = element('button', ['btn', 'primary'], 'Upload');
+  upload.style.display = 'none'; // Old Code:
+  //   const preview = document.createElement('div');
+  //   preview.classList.add('preview');
+  //   const open = document.createElement('button');
+  //   open.classList.add('btn');
+  //   open.textContent = 'Open';
+  //   const upload = document.createElement('button');
+  //   upload.classList.add('btn primary');
+  //   upload.textContent = 'Upload';
 
   if (options.multi) {
     //multi for multiple files upload at once
@@ -155,6 +193,7 @@ function upload(selector) {
 
   input.insertAdjacentElement('afterend', preview); //insert preview div on img selection
 
+  input.insertAdjacentElement('afterend', upload);
   input.insertAdjacentElement('afterend', open); //insert button after the default one
 
   var triggerInput = function triggerInput() {
@@ -168,6 +207,8 @@ function upload(selector) {
 
     files = Array.from(event.target.files);
     preview.innerHTML = ''; //resets list of items on upload
+
+    upload.style.display = 'inline'; //reflect upload button on screen, after images been uploaded
 
     files.forEach(function (file) {
       if (!file.type.match('image')) {
@@ -199,6 +240,11 @@ function upload(selector) {
     files = files.filter(function (file) {
       return file.name !== name;
     });
+
+    if (!files.length) {
+      upload.style.display = 'none'; //remove upload button if images have been deleted from the screen
+    }
+
     var block = preview.querySelector("[data-name=\"".concat(name, "\"]")).closest('.preview-image'); //select block of img on .preview-remove click
 
     block.classList.add('removing');
@@ -206,11 +252,14 @@ function upload(selector) {
       block.remove();
     }, 300); //300 to match our css scale animation of 0.3s
     //block.remove(); //to simply remove without animation
+
+    var uploadHandler = function uploadHandler() {};
   };
 
   open.addEventListener('click', triggerInput);
   input.addEventListener('change', changeHandler);
   preview.addEventListener('click', removeHandler);
+  upload.addEventListener('click', uploadHandler);
 }
 },{}],"app.js":[function(require,module,exports) {
 "use strict";
@@ -250,7 +299,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56028" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57735" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
