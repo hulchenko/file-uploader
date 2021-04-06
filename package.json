@@ -1,0 +1,23 @@
+{
+  "name": "file-uploader",
+  "version": "1.0.0",
+  "description": "File Uploader",
+  "main": "script.js",
+  "scripts": {
+    "serve": "parcel index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hulchenko/file-uploader.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hulchenko/file-uploader/issues"
+  },
+  "homepage": "https://github.com/hulchenko/file-uploader#readme",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.5"
+  }
+}
