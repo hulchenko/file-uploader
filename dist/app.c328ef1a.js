@@ -125,8 +125,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.upload = upload;
 
+/* bytes to kilobytes functionality */
+function bytesToSize(bytes) {
+  var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+  if (bytes == 0) return '0 Byte';
+  var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+  return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+}
+
 function upload(selector) {
   var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var files = [];
   var input = document.querySelector(selector);
   var preview = document.createElement('div');
   preview.classList.add('preview');
@@ -157,7 +166,7 @@ function upload(selector) {
       return;
     }
 
-    var files = Array.from(event.target.files);
+    files = Array.from(event.target.files);
     preview.innerHTML = ''; //resets list of items on upload
 
     files.forEach(function (file) {
@@ -171,7 +180,7 @@ function upload(selector) {
       reader.onload = function (event) {
         var src = event.target.result; //image code
 
-        preview.insertAdjacentHTML('afterbegin', "\n        <div class='preview-image'>\n        <div class='preview-remove'>&times</div>\n        <img src='".concat(src, "' alt='").concat(file.name, "'/>\n        </div>")); // input.insertAdjacentHTML(
+        preview.insertAdjacentHTML('afterbegin', "\n        <div class='preview-image'>\n        <div class='preview-remove' data-name='".concat(file.name, "'>&times</div>\n        <img src='").concat(src, "' alt='").concat(file.name, "'/>\n        <div class='preview-info'>\n        <span>").concat(file.name, "</span>\n        ").concat(bytesToSize(file.size), "\n        </div>\n        </div>")); // input.insertAdjacentHTML(
         //   'afterend',
         //   `<img src="${event.target.result}" />`
         // ); //initial preview to work with
@@ -181,8 +190,27 @@ function upload(selector) {
     });
   };
 
+  var removeHandler = function removeHandler(event) {
+    if (!event.target.dataset.name) {
+      return;
+    }
+
+    var name = event.target.dataset.name;
+    files = files.filter(function (file) {
+      return file.name !== name;
+    });
+    var block = preview.querySelector("[data-name=\"".concat(name, "\"]")).closest('.preview-image'); //select block of img on .preview-remove click
+
+    block.classList.add('removing');
+    setTimeout(function () {
+      block.remove();
+    }, 300); //300 to match our css scale animation of 0.3s
+    //block.remove(); //to simply remove without animation
+  };
+
   open.addEventListener('click', triggerInput);
   input.addEventListener('change', changeHandler);
+  preview.addEventListener('click', removeHandler);
 }
 },{}],"app.js":[function(require,module,exports) {
 "use strict";
@@ -222,7 +250,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52771" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56028" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

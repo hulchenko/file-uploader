@@ -10,4 +10,14 @@
 10. set only specific file extensions for uploading
 11. setup FileReader to preview selected pictures
 12. disable repetitive adding, reset list on every new attempt
-13. add remove file functionality
+13. add remove file icon, add file description field
+14. change bytes to kilobytes preview line
+15. add remove functionality:
+    1. add data attribute to HTML
+    2. use file.name as unique ID for each file
+    3. target whole block 'div.preview' and see which item was clicked with addEventListener
+    4. target and return a name of only those with dataset attribute
+    5. on-click return a list of created array upon selection
+    6. target whole block on .preview-remove click
+    7. add remove function / animation
+16. add upload button after pics loaded to the screen

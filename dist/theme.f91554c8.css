@@ -70,6 +70,12 @@ input[type='file'] {
   position: relative; /* to ensure 'position: absolute' .preview-remove will position relatively to this block */
   margin-bottom: 0.5rem;
   margin-right: 0.5rem;
+  overflow: hidden; /* to remove visibility of the bottom description block */
+}
+
+.preview-image.removing {
+  transform: scale(0);
+  transition: transform 0.3s;
 }
 
 .preview-image img {
@@ -79,7 +85,7 @@ input[type='file'] {
 
 .preview-remove {
   opacity: 0;
-  transition: 1s;
+  transition: 0.5s;
   /* remove button on the picture */
   width: 20px;
   height: 20px;
@@ -97,6 +103,26 @@ input[type='file'] {
 .preview-image:hover .preview-remove {
   /* add remove button pop-up on hover */
   opacity: 1;
+}
+
+.preview-image:hover .preview-info {
+  /* add remove button pop-up on hover */
+  bottom: 4px;
+}
+
+.preview-info {
+  transition: bottom 0.5s;
+  position: absolute;
+  right: 0;
+  bottom: -20px;
+  left: 0;
+  height: 24px;
+  font-size: 0.8rem;
+  background: rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5px;
 }
 
 

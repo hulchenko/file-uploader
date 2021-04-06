@@ -1,4 +1,13 @@
+/* bytes to kilobytes functionality */
+function bytesToSize(bytes) {
+  var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+  if (bytes == 0) return '0 Byte';
+  var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+  return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+}
+
 export function upload(selector, options = {}) {
+  let files = [];
   const input = document.querySelector(selector);
   const preview = document.createElement('div');
 
@@ -28,7 +37,7 @@ export function upload(selector, options = {}) {
       return;
     }
 
-    const files = Array.from(event.target.files);
+    files = Array.from(event.target.files);
 
     preview.innerHTML = ''; //resets list of items on upload
     files.forEach((file) => {
@@ -45,8 +54,12 @@ export function upload(selector, options = {}) {
           'afterbegin',
           `
         <div class='preview-image'>
-        <div class='preview-remove'>&times</div>
+        <div class='preview-remove' data-name='${file.name}'>&times</div>
         <img src='${src}' alt='${file.name}'/>
+        <div class='preview-info'>
+        <span>${file.name}</span>
+        ${bytesToSize(file.size)}
+        </div>
         </div>`
         );
         // input.insertAdjacentHTML(
@@ -59,6 +72,26 @@ export function upload(selector, options = {}) {
     });
   };
 
+  const removeHandler = (event) => {
+    if (!event.target.dataset.name) {
+      return;
+    }
+
+    const name = event.target.dataset.name;
+    files = files.filter((file) => file.name !== name);
+
+    const block = preview
+      .querySelector(`[data-name="${name}"]`)
+      .closest('.preview-image'); //select block of img on .preview-remove click
+    block.classList.add('removing');
+
+    setTimeout(function () {
+      block.remove();
+    }, 300); //300 to match our css scale animation of 0.3s
+    //block.remove(); //to simply remove without animation
+  };
+
   open.addEventListener('click', triggerInput);
   input.addEventListener('change', changeHandler);
+  preview.addEventListener('click', removeHandler);
 }
