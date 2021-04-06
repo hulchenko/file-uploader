@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+html {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
 body {
   background: #ccc;
   font-family: 'Roboto', sans-serif;
@@ -7,11 +13,13 @@ body {
 
 .container {
   padding-top: 5rem;
-  width: 800px;
+  width: 400px;
   margin: 0 auto;
 }
 
 .card {
+  display: flex;
+  justify-content: center;
   border-radius: 6px;
   background-color: #ffffff;
   padding: 1rem;
