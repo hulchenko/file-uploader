@@ -125,5 +125,18 @@ input[type='file'] {
   padding: 0 5px;
 }
 
+.preview-info-progress {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background-color: #00d4ff;
+  transition: width 0.2s;
+  /* to show percent count in the middle of the progress bar */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 
 /*# sourceMappingURL=/theme.f91554c8.css.map */

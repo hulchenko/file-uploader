@@ -20,8 +20,11 @@ const element = (tag, classes = [], content) => {
   return node;
 };
 
+function noop() {} //no operation function, to avoid errors if there is nothing uploaded
+
 export function upload(selector, options = {}) {
   let files = [];
+  const onUpload = options.onUpload ?? noop; // ?? - if left expression null or undefined
   const input = document.querySelector(selector);
   //New Code:
   const preview = element('div', ['preview']);
@@ -119,8 +122,20 @@ export function upload(selector, options = {}) {
       block.remove();
     }, 300); //300 to match our css scale animation of 0.3s
     //block.remove(); //to simply remove without animation
+  };
 
-    const uploadHandler = () => {};
+  const clearPreview = (element) => {
+    element.style.bottom = '4px';
+    element.innerHTML = '<div class="preview-info-progress"></div>';
+  };
+
+  const uploadHandler = () => {
+    preview
+      .querySelectorAll('.preview-remove')
+      .forEach((element) => element.remove()); //remove .preview-remove class, so user can no longer delete images that are uploaded
+    const previewInfo = preview.querySelectorAll('.preview-info');
+    previewInfo.forEach(clearPreview);
+    onUpload(files, previewInfo);
   };
 
   open.addEventListener('click', triggerInput);
