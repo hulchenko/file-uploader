@@ -43,6 +43,11 @@
     1. create percentage const inside task.on()
     2. create block const inside task.on
     3. assign percentage to HTML and CSS to reflect on screen
+24. Netlify deployment:
+    1. change script 'serve' to 'start'
+    2. add 'build' script
+    3. on Netlify - build command: npm run build
+    4. on Netlify - publish directory: dist/
 
 Link to the storage folder images/:
 
