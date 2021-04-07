@@ -2,9 +2,11 @@
 
 Environment: Node.js, FireBase
 
+Deployment: Netlify
+
 <b>Live Demo:</b>
 
-https://hulchenko.github.io/file-uploader/
+https://vigorous-wright-e2ac02.netlify.app/
 
 Setup: https://github.com/hulchenko/file-uploader/blob/main/config.md
 
